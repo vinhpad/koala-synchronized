@@ -6,9 +6,9 @@ import requests
 
 from config import KOALA_URL
 from core.department_core import getDeptByDeptCode
-from core.user_core import createUser, findUserByUserFullCode
+from core.user_core import createUser
 from utils import clear_table, formatted_date_time
-
+from tqdm import tqdm
 
 async def getDataSubject(token, page):
     
@@ -38,7 +38,7 @@ async def syncUserInfo(token):
             try:
                 checkinout_raw_data = await getDataSubject(token, page_id)
                 
-                for raw_data in checkinout_raw_data['data']:
+                for raw_data in tqdm(checkinout_raw_data['data']):
                     try:
                         user_hire_day_timestamp = int(raw_data['create_time'])
                         user_hire_day_str = formatted_date_time(user_hire_day_timestamp, "%Y-%m-%d")
